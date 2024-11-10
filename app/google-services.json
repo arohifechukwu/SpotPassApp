@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "532260489306",
+    "firebase_url": "https://spotpassapp-default-rtdb.firebaseio.com",
+    "project_id": "spotpassapp",
+    "storage_bucket": "spotpassapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532260489306:android:6440a30375ecf2d7427063",
+        "android_client_info": {
+          "package_name": "com.example.spotpassapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXT6dUvLHk_UwtEETyHot_Yf7yS50BKWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
