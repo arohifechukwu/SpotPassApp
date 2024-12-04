@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +18,7 @@
         android:theme="@style/Theme.SpotPassApp"
         tools:targetApi="31">
 
-        <!-- Splash Screen Activity (Launcher) -->
+        <!-- Main Launcher Activity -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
@@ -29,17 +31,38 @@
         <!-- Authentication Activity -->
         <activity
             android:name=".AuthActivity"
-            android:exported="false" />
+            android:exported="true" />
 
-        <!-- Location Activity -->
+        <!-- Core App Activities -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExploreEventsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FavoritesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="false" />
         <activity
             android:name=".LocationActivity"
             android:exported="false" />
 
-        <!-- Main Activity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+        <!-- Meta-data for Google Maps API -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBmrbgy-uCjRxQkCYgmYeU5tmMwUT44q04" />
 
     </application>
 </manifest>

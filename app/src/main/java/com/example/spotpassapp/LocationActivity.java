@@ -1,9 +1,8 @@
 package com.example.spotpassapp;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,22 +12,32 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import android.location.Location;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LocationActivity extends AppCompatActivity {
+import android.Manifest;
+import android.content.pm.PackageManager;
+
+public class LocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
-    private TextView locationText;
+    private GoogleMap mMap;
+    private LatLng userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        locationText = findViewById(R.id.locationText);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         checkLocationPermission();
@@ -46,30 +55,28 @@ public class LocationActivity extends AppCompatActivity {
     }
 
     private void fetchLocation() {
-        Task<Location> locationResult = fusedLocationClient.getLastLocation();
-        locationResult.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    locationText.setText("Latitude: " + latitude + "\nLongitude: " + longitude);
-                } else {
-                    locationText.setText("Location not available.");
-                }
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(userLocation).title("You are here"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+
+                // Navigate to HomeActivity after a delay
+                new Handler().postDelayed(() -> {
+                    Intent intent = new Intent(LocationActivity.this, HomeActivity.class);
+                    intent.putExtra("user_latitude", userLocation.latitude);
+                    intent.putExtra("user_longitude", userLocation.longitude);
+                    startActivity(intent);
+                    finish();
+                }, 3000);
+            } else {
+                Toast.makeText(LocationActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                fetchLocation();
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }

@@ -89,4 +89,15 @@
         android:elevation="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/guestLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue as Guest"
+        android:textColor="@color/primaryColor"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textStyle="italic" />
+
 </LinearLayout>
