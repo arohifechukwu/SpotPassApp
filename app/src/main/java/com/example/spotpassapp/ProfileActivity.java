@@ -30,9 +30,9 @@ public class ProfileActivity extends AppCompatActivity {
     private StorageReference storageReference;
 
     private ImageView profileImage;
-    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText;
-    private MaterialButton saveButton, homeButton;
     private TextView emailTextView;
+    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText;
+    private MaterialButton saveButton, homeButton, logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,12 @@ public class ProfileActivity extends AppCompatActivity {
         addressEditText = findViewById(R.id.addressEditText);
         saveButton = findViewById(R.id.saveButton);
         homeButton = findViewById(R.id.homeButton);
+        logoutButton = findViewById(R.id.logoutButton);
 
         profileImage.setOnClickListener(v -> openImagePicker());
         saveButton.setOnClickListener(v -> updateProfileData());
         homeButton.setOnClickListener(v -> navigateToHome());
+        logoutButton.setOnClickListener(v -> logout());
 
         loadProfileData();
     }
@@ -68,6 +70,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void navigateToHome() {
         Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void logout() {
+        mAuth.signOut();
+        Intent intent = new Intent(ProfileActivity.this, AuthActivity.class);
         startActivity(intent);
         finish();
     }

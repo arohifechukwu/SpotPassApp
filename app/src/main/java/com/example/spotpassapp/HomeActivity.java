@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         profileIcon = findViewById(R.id.profileIcon);
 
+        // Set Profile Icon Click Listener
         profileIcon.setOnClickListener(v -> navigateToProfile());
 
         // Get user location from intent
@@ -40,7 +41,16 @@ public class HomeActivity extends AppCompatActivity {
         String userLocation = intent.getStringExtra("user_location");
         locationText.setText(String.format("Your Location: %s", userLocation != null ? userLocation : "Unknown"));
 
-        // Add events to the list
+        // Populate the event list
+        populateEventList();
+
+        // Set up RecyclerView
+        eventAdapter = new EventAdapter(this, eventList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(eventAdapter);
+    }
+
+    private void populateEventList() {
         eventList = new ArrayList<>();
         eventList.add(new Event("Concert Night", "Music festival", "Montreal", 50.0, "2024-11-20", "19:00", String.valueOf(R.drawable.circle_background)));
         eventList.add(new Event("Art Expo", "Modern art exhibit", "Quebec", 30.0, "2024-11-25", "10:00", String.valueOf(R.drawable.circle_background)));
@@ -52,11 +62,6 @@ public class HomeActivity extends AppCompatActivity {
         eventList.add(new Event("Christmas Market", "Festive shopping", "Montreal", 0.0, "2024-12-25", "10:00", String.valueOf(R.drawable.circle_background)));
         eventList.add(new Event("New Year's Eve", "Countdown party", "Toronto", 75.0, "2024-12-31", "22:00", String.valueOf(R.drawable.circle_background)));
         eventList.add(new Event("Music Workshop", "Learn instruments", "Winnipeg", 40.0, "2025-01-05", "14:00", String.valueOf(R.drawable.circle_background)));
-
-        // Set up RecyclerView
-        eventAdapter = new EventAdapter(this, eventList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(eventAdapter);
     }
 
     private void navigateToProfile() {
