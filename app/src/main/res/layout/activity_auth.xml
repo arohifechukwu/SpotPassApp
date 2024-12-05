@@ -1,103 +1,99 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"
     android:background="@color/backgroundColor">
 
-    <!-- Logo Above Email Input Field -->
-
-    <ImageView
-        android:id="@+id/logoImage"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="32dp"
-        android:contentDescription="App Logo"
-        android:scaleType="centerInside"
-        android:src="@drawable/splash_logo" />
-
-    <!-- Email Input Field with Rounded Background -->
-
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:hintTextColor="@color/primaryColor"
-        app:boxStrokeColor="@color/primaryColor"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusTopStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusBottomEnd="24dp"
-        android:hint="Email">
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailEditText"
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="App Logo"
+            android:scaleType="centerInside"
+            android:src="@drawable/splash_logo" />
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textColorHint="@color/textColorPrimary" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="@color/primaryColor"
+            app:boxStrokeColor="@color/primaryColor"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            android:hint="Email">
 
-    <!-- Password Input Field with Rounded Background -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        app:hintTextColor="@color/primaryColor"
-        app:boxStrokeColor="@color/primaryColor"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusTopStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusBottomEnd="24dp"
-        android:hint="Password">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordEditText"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColorHint="@color/textColorPrimary" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="@color/primaryColor"
+            app:boxStrokeColor="@color/primaryColor"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            android:hint="Password">
 
-    <!-- Sign In Button with Rounded Corners and Elevated Shadow -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:backgroundTint="@color/primaryColor"
-        android:textColor="@android:color/white"
-        app:cornerRadius="24dp"
-        android:elevation="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColorHint="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Sign Up Button with Rounded Corners and Elevated Shadow -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signUpButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:backgroundTint="@color/primaryColor"
-        android:textColor="@android:color/white"
-        app:cornerRadius="24dp"
-        android:elevation="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signInButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white"
+            app:cornerRadius="24dp"
+            android:elevation="4dp"
+            android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/guestLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue as Guest"
-        android:textColor="@color/primaryColor"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:textStyle="italic" />
+        <TextView
+            android:id="@+id/forgotPasswordLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot your password? Reset it."
+            android:textColor="@color/primaryColor"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textStyle="italic" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/signUpLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Sign Up"
+            android:textColor="@color/primaryColor"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>
