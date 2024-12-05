@@ -37,6 +37,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="4dp"
+            android:textColor="@color/primaryColor"
             tools:text="Sample Event Title" />
 
         <TextView
@@ -56,6 +57,8 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/primaryColor"
             tools:text="$50" />
 
         <TextView

@@ -41,6 +41,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-appcheck")
+    implementation(libs.firebase.storage)
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation(libs.material)
     implementation(libs.appcompat)
