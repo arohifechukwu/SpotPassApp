@@ -1,7 +1,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -36,7 +35,6 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Email">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
@@ -58,13 +56,34 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Password">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:textColorHint="@color/textColorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Role Selection Spinner -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            app:boxStrokeColor="@color/primaryColor"
+            app:boxStrokeWidth="2dp">
+
+            <Spinner
+                android:id="@+id/roleSpinnerAuth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:background="@android:color/transparent" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Sign In Button -->
@@ -76,7 +95,6 @@
             android:backgroundTint="@color/primaryColor"
             android:textColor="@android:color/white"
             app:cornerRadius="24dp"
-            android:elevation="4dp"
             android:layout_marginTop="8dp" />
 
         <!-- Forgot Password Link -->
@@ -85,9 +103,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot your password? Reset it."
-            android:textColor="@color/primaryColor"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:textColor="@color/primaryColor"
             android:textStyle="italic" />
 
         <!-- Sign Up Link -->
@@ -96,9 +114,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Sign Up"
-            android:textColor="@color/primaryColor"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:textColor="@color/primaryColor"
             android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

@@ -1,8 +1,213 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ScrollView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:padding="24dp"-->
+<!--    android:background="@color/backgroundColor">-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center">-->
+
+<!--        &lt;!&ndash; Logo &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/logoImage"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:layout_marginBottom="32dp"-->
+<!--            android:contentDescription="App Logo"-->
+<!--            android:scaleType="centerInside"-->
+<!--            android:src="@drawable/splash_logo" />-->
+
+<!--        &lt;!&ndash; Email Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Email">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/emailEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textEmailAddress"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; First Name Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="First Name">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/firstNameEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPersonName"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Last Name Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Last Name">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/lastNameEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPersonName"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Phone Number Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Phone Number">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/phoneEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="phone"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Address Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Address">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/addressEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPostalAddress"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Password Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Password">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/passwordEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPassword"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Confirm Password Input Field &ndash;&gt;-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            app:hintTextColor="@color/primaryColor"-->
+<!--            app:boxStrokeColor="@color/primaryColor"-->
+<!--            app:boxBackgroundMode="outline"-->
+<!--            app:boxCornerRadiusTopStart="24dp"-->
+<!--            app:boxCornerRadiusTopEnd="24dp"-->
+<!--            app:boxCornerRadiusBottomStart="24dp"-->
+<!--            app:boxCornerRadiusBottomEnd="24dp"-->
+<!--            android:hint="Confirm Password">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/confirmPasswordEditText"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="textPassword"-->
+<!--                android:textColorHint="@color/textColorPrimary" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--        &lt;!&ndash; Sign Up Button &ndash;&gt;-->
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/signUpButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Sign Up"-->
+<!--            android:backgroundTint="@color/primaryColor"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            app:cornerRadius="24dp"-->
+<!--            android:elevation="4dp"-->
+<!--            android:layout_marginTop="8dp" />-->
+
+<!--        &lt;!&ndash; Already have an account? Sign-In Link &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/signInLink"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Already have an account? Sign In"-->
+<!--            android:textColor="@color/primaryColor"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:gravity="center"-->
+<!--            android:textStyle="italic" />-->
+<!--    </LinearLayout>-->
+<!--</ScrollView>-->
+
+
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -14,7 +219,7 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!-- Logo -->
+        <!-- App Logo -->
         <ImageView
             android:id="@+id/logoImage"
             android:layout_width="250dp"
@@ -37,13 +242,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Email">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- First Name Input Field -->
@@ -59,13 +262,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="First Name">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/firstNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Last Name Input Field -->
@@ -81,13 +282,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Last Name">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/lastNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Phone Number Input Field -->
@@ -103,13 +302,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Phone Number">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Address Input Field -->
@@ -125,14 +322,27 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Address">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/addressEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textPostalAddress" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Role Selection Spinner -->
+        <Spinner
+            android:id="@+id/roleSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintTextColor="@color/primaryColor"
+            app:boxStrokeColor="@color/primaryColor"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            android:spinnerMode="dropdown" />
 
         <!-- Password Input Field -->
         <com.google.android.material.textfield.TextInputLayout
@@ -147,13 +357,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Password">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Confirm Password Input Field -->
@@ -169,13 +377,11 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             android:hint="Confirm Password">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/confirmPasswordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textColorHint="@color/textColorPrimary" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Sign Up Button -->
@@ -186,9 +392,10 @@
             android:text="Sign Up"
             android:backgroundTint="@color/primaryColor"
             android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
             app:cornerRadius="24dp"
-            android:elevation="4dp"
-            android:layout_marginTop="8dp" />
+            app:elevation="4dp"
+            android:layout_marginBottom="16dp" />
 
         <!-- Already have an account? Sign-In Link -->
         <TextView
@@ -196,9 +403,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already have an account? Sign In"
-            android:textColor="@color/primaryColor"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:textColor="@color/primaryColor"
             android:textStyle="italic" />
     </LinearLayout>
 </ScrollView>

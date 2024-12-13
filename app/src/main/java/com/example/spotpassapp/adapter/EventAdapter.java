@@ -1,16 +1,21 @@
 package com.example.spotpassapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
+import com.example.spotpassapp.EventDetailsActivity;
 import com.example.spotpassapp.R;
 import com.example.spotpassapp.model.Event;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +23,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     private Context context;
     private List<Event> eventList;
-    private List<Event> eventListFull; // For filtering
+    private List<Event> eventListFull; // Full copy for filtering
 
     public EventAdapter(Context context, List<Event> eventList) {
         this.context = context;
         this.eventList = eventList;
-        this.eventListFull = new ArrayList<>(eventList); // Initialize for search filtering
+        this.eventListFull = new ArrayList<>(eventList); // Initialize full list
     }
 
     @NonNull
@@ -38,12 +43,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         Event event = eventList.get(position);
         holder.eventTitle.setText(event.getTitle());
         holder.eventDescription.setText(event.getDescription());
-        holder.eventPrice.setText(String.format("$%.2f", event.getPrice())); // Format as a string with a dollar sign and two decimal places
+        holder.eventPrice.setText(String.format("$%.2f", event.getPrice()));
+        holder.eventDate.setText(event.getDate());
+        holder.eventLocation.setText(event.getLocation());
 
-        // Load image using Glide or another image loading library
-        Glide.with(context)
-                .load(event.getImageUrl())
-                .into(holder.eventImage);
+        Glide.with(context).load(event.getImageUrl()).into(holder.eventImage);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EventDetailsActivity.class);
+            intent.putExtra("title", event.getTitle());
+            intent.putExtra("description", event.getDescription());
+            intent.putExtra("location", event.getLocation());
+            intent.putExtra("price", event.getPrice());
+            intent.putExtra("date", event.getDate());
+            intent.putExtra("time", event.getTime());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -51,7 +66,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return eventList.size();
     }
 
-    // Method for filtering data
     public void filter(String query) {
         eventList.clear();
         if (query.isEmpty()) {

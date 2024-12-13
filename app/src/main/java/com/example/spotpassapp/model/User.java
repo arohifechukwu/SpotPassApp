@@ -6,19 +6,22 @@ public class User {
     private String phone;
     private String address;
     private String email;
+    private String role;  // New field
 
-    public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
+    // Default constructor required for Firebase
+    public User() { }
 
-    public User(String firstName, String lastName, String phone, String address, String email) {
+    // Parameterized constructor for compatibility
+    public User(String firstName, String lastName, String phone, String address, String email, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.address = address;
         this.email = email;
+        this.role = role;
     }
 
+    // Getters and setters
     public String getFirstName() {
         return firstName;
     }
@@ -53,5 +56,13 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
