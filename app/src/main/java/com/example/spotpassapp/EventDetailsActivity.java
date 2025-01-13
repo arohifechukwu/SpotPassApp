@@ -3,15 +3,18 @@ package com.example.spotpassapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.spotpassapp.model.Event;
+import com.bumptech.glide.Glide;
+import com.example.spotpassapp.R;
 
 public class EventDetailsActivity extends AppCompatActivity {
 
     private TextView titleTextView, descriptionTextView, locationTextView, priceTextView, dateTextView, timeTextView;
+    private ImageView eventImageView;
     private Button bookTicketButton, addToCartButton;
 
     @Override
@@ -26,6 +29,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         priceTextView = findViewById(R.id.eventPrice);
         dateTextView = findViewById(R.id.eventDate);
         timeTextView = findViewById(R.id.eventTime);
+        eventImageView = findViewById(R.id.eventImageView); // ImageView for event image
         bookTicketButton = findViewById(R.id.bookTicketButton);
         addToCartButton = findViewById(R.id.addToCartButton);
 
@@ -38,6 +42,7 @@ public class EventDetailsActivity extends AppCompatActivity {
             double price = intent.getDoubleExtra("price", 0.0);
             String date = intent.getStringExtra("date");
             String time = intent.getStringExtra("time");
+            String imageUrl = intent.getStringExtra("imageUrl"); // Image URL passed from EventAdapter
 
             // Set event details
             titleTextView.setText(title);
@@ -46,6 +51,14 @@ public class EventDetailsActivity extends AppCompatActivity {
             priceTextView.setText(String.format("$%.2f", price));
             dateTextView.setText(date);
             timeTextView.setText(time);
+
+            // Load the event image using Glide
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.ic_event_placeholder) // Default placeholder image
+                        .into(eventImageView);
+            }
         }
 
         // Navigate to CheckoutActivity

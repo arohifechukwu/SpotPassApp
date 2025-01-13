@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:background="@color/backgroundColor">
+    android:background="@color/backgroundColor"
+    tools:context=".AdminDashboardActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Title -->
         <TextView
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
@@ -21,27 +23,68 @@
             android:text="Admin Dashboard"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/textColorPrimary" />
 
+        <!-- Manage Users -->
         <Button
             android:id="@+id/manageUsersButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Manage Users"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
 
+        <!-- Upload Event -->
         <Button
-            android:id="@+id/updateItemsButton"
+            android:id="@+id/uploadEventButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update Items"
-            android:layout_marginTop="16dp" />
+            android:text="Upload New Event"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
 
+        <!-- Modify Existing Event -->
+        <Button
+            android:id="@+id/modifyEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modify Existing Event"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
+
+        <!-- Reset User Password -->
+        <Button
+            android:id="@+id/resetUserPasswordButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset User Password"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
+
+        <!-- Add New User -->
+        <Button
+            android:id="@+id/addUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New User"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
+
+        <!-- Logout -->
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
+
     </LinearLayout>
 </ScrollView>

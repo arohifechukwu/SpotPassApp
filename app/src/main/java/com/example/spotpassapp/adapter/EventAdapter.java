@@ -47,8 +47,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.eventDate.setText(event.getDate());
         holder.eventLocation.setText(event.getLocation());
 
+        // Load the event image using Glide
         Glide.with(context).load(event.getImageUrl()).into(holder.eventImage);
 
+        // Set an item click listener to pass event data to EventDetailsActivity
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, EventDetailsActivity.class);
             intent.putExtra("title", event.getTitle());
@@ -57,6 +59,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             intent.putExtra("price", event.getPrice());
             intent.putExtra("date", event.getDate());
             intent.putExtra("time", event.getTime());
+            intent.putExtra("imageUrl", event.getImageUrl()); // Pass the image URL
             context.startActivity(intent);
         });
     }

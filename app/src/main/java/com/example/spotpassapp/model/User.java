@@ -6,12 +6,13 @@ public class User {
     private String phone;
     private String address;
     private String email;
-    private String role;  // New field
+    private String role;  // Role of the user ("admin" or "user")
+    private boolean disabled;  // To track account status
 
     // Default constructor required for Firebase
     public User() { }
 
-    // Parameterized constructor for compatibility
+    // Parameterized constructor
     public User(String firstName, String lastName, String phone, String address, String email, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,6 +20,7 @@ public class User {
         this.address = address;
         this.email = email;
         this.role = role;
+        this.disabled = false;  // Default to active
     }
 
     // Getters and setters
@@ -64,5 +66,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }

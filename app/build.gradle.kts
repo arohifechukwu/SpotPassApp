@@ -39,6 +39,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("com.google.firebase:firebase-database:20.0.5")
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation ("com.google.firebase:firebase-storage:20.0.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-appcheck")

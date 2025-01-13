@@ -16,6 +16,7 @@
         <item>Choose Your Role</item>
         <item>User</item>
         <item>Admin</item>
+        <item>Organizer</item>
     </string-array>
 
     <!-- Buttons -->

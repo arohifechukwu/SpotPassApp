@@ -1,86 +1,13 @@
-//package com.example.spotpassapp;
-//
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.recyclerview.widget.LinearLayoutManager;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import com.example.spotpassapp.adapter.EventAdapter;
-//import com.example.spotpassapp.model.Event;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class HomeActivity extends AppCompatActivity {
-//
-//    private RecyclerView recyclerView;
-//    private EventAdapter eventAdapter;
-//    private List<Event> eventList;
-//    private TextView locationText;
-//    private ImageView profileIcon;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_home);
-//
-//        // Initialize Views
-//        locationText = findViewById(R.id.locationText);
-//        recyclerView = findViewById(R.id.recyclerView);
-//        profileIcon = findViewById(R.id.profileIcon);
-//
-//        // Set Profile Icon Click Listener
-//        profileIcon.setOnClickListener(v -> navigateToProfile());
-//
-//        // Get user location from intent
-//        Intent intent = getIntent();
-//        String userLocation = intent.getStringExtra("user_location");
-//        locationText.setText(String.format("Your Location: %s", userLocation != null ? userLocation : "Unknown"));
-//
-//        // Populate the event list
-//        populateEventList();
-//
-//        // Set up RecyclerView
-//        eventAdapter = new EventAdapter(this, eventList);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(eventAdapter);
-//    }
-//
-//    private void populateEventList() {
-//        eventList = new ArrayList<>();
-//        eventList.add(new Event("Concert Night", "Music festival", "Montreal", 50.0, "2024-11-20", "19:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Art Expo", "Modern art exhibit", "Quebec", 30.0, "2024-11-25", "10:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Tech Conference", "Technology insights", "Toronto", 100.0, "2024-12-01", "09:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Food Festival", "Gastronomic delight", "Vancouver", 25.0, "2024-12-05", "11:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Marathon Run", "Charity marathon", "Calgary", 15.0, "2024-12-10", "07:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Film Screening", "Independent films", "Ottawa", 20.0, "2024-12-15", "18:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Book Fair", "Literature expo", "Halifax", 10.0, "2024-12-20", "10:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Christmas Market", "Festive shopping", "Montreal", 0.0, "2024-12-25", "10:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("New Year's Eve", "Countdown party", "Toronto", 75.0, "2024-12-31", "22:00", String.valueOf(R.drawable.circle_background)));
-//        eventList.add(new Event("Music Workshop", "Learn instruments", "Winnipeg", 40.0, "2025-01-05", "14:00", String.valueOf(R.drawable.circle_background)));
-//    }
-//
-//    private void navigateToProfile() {
-//        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-//        startActivity(intent);
-//    }
-//}
-
-
-
-
 package com.example.spotpassapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -88,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotpassapp.adapter.EventAdapter;
 import com.example.spotpassapp.model.Event;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     private List<Event> eventList;
     private TextView locationText;
     private ImageView profileIcon;
+    private BottomNavigationView bottomNavigationView;
 
     private FirebaseAuth mAuth;
     private DatabaseReference databaseRef;
@@ -116,53 +48,104 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        databaseRef = FirebaseDatabase.getInstance().getReference("users");
+        databaseRef = FirebaseDatabase.getInstance().getReference();
 
         // Initialize Views
         locationText = findViewById(R.id.locationText);
         recyclerView = findViewById(R.id.recyclerView);
         profileIcon = findViewById(R.id.profileIcon);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        setupBottomNavigation();
+        loadUserData();
+        fetchEventsFromDatabase();
+
+        eventList = new ArrayList<>();
+        eventAdapter = new EventAdapter(this, eventList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(eventAdapter);
 
         // Set Click Listeners
         profileIcon.setOnClickListener(v -> navigateToProfile());
         locationText.setOnClickListener(v -> navigateToEditLocation());
-
-        // Get User Location from Intent
-        Intent intent = getIntent();
-        String userLocation = intent.getStringExtra("user_location");
-        locationText.setText(String.format("Your Location: %s", userLocation != null ? userLocation : "Unknown"));
-
-        // Populate Event List
-        populateEventList();
-
-        // Setup RecyclerView
-        eventAdapter = new EventAdapter(this, eventList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(eventAdapter);
     }
 
-    private void populateEventList() {
-        eventList = new ArrayList<>();
-        eventList.add(new Event("Concert Night", "Music festival", "Montreal", 50.0, "2024-11-20", "19:00", String.valueOf(R.drawable.circle_background)));
-        eventList.add(new Event("Art Expo", "Modern art exhibit", "Quebec", 30.0, "2024-11-25", "10:00", String.valueOf(R.drawable.circle_background)));
-        eventList.add(new Event("Tech Conference", "Technology insights", "Toronto", 100.0, "2024-12-01", "09:00", String.valueOf(R.drawable.circle_background)));
-        eventList.add(new Event("Food Festival", "Gastronomic delight", "Vancouver", 25.0, "2024-12-05", "11:00", String.valueOf(R.drawable.circle_background)));
+    private void setupBottomNavigation() {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();  // Avoid multiple method calls
+            if (itemId == R.id.navigation_home) {
+                // Stay on HomeActivity
+                return true;
+            } else if (itemId == R.id.navigation_search) {
+                startActivity(new Intent(this, ExploreEventsActivity.class));
+                return true;
+            } else if (itemId == R.id.navigation_favorites) {
+                startActivity(new Intent(this, FavoritesActivity.class));
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                navigateToProfile();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void loadUserData() {
+        String userId = mAuth.getCurrentUser().getUid();
+        databaseRef.child("users").child(userId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                DataSnapshot snapshot = task.getResult();
+
+                // Load Location
+                String location = snapshot.child("location").getValue(String.class);
+                locationText.setText(String.format("Your Location: %s", location != null ? location : "Unknown"));
+
+                // Load Profile Picture
+                String profileImageUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                if (!TextUtils.isEmpty(profileImageUrl)) {
+                    Picasso.get()
+                            .load(profileImageUrl)
+                            .placeholder(R.drawable.ic_profile_placeholder)
+                            .into(profileIcon);
+                }
+            } else {
+                Toast.makeText(this, "Failed to load user data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchEventsFromDatabase() {
+        databaseRef.child("events").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                eventList.clear(); // Clear the current list to avoid duplication
+                for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
+                    Event event = eventSnapshot.getValue(Event.class);
+                    if (event != null) {
+                        eventList.add(event);
+                    }
+                }
+                eventAdapter.notifyDataSetChanged(); // Notify adapter about data changes
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(HomeActivity.this, "Failed to fetch events.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void navigateToProfile() {
         String userId = mAuth.getCurrentUser().getUid();
-
-        databaseRef.child(userId).get().addOnCompleteListener(task -> {
+        databaseRef.child("users").child(userId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
                 DataSnapshot snapshot = task.getResult();
                 String role = snapshot.child("role").getValue(String.class);
 
-                Intent intent;
-                if ("Admin".equalsIgnoreCase(role)) {
-                    intent = new Intent(HomeActivity.this, AdminDashboardActivity.class);
-                } else {
-                    intent = new Intent(HomeActivity.this, UserDashboardActivity.class);
-                }
+                Intent intent = "Admin".equalsIgnoreCase(role)
+                        ? new Intent(HomeActivity.this, AdminDashboardActivity.class)
+                        : new Intent(HomeActivity.this, UserDashboardActivity.class);
+
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "User data not found.", Toast.LENGTH_SHORT).show();
@@ -187,7 +170,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void saveUserLocation(String location) {
         String userId = mAuth.getCurrentUser().getUid();
-        databaseRef.child(userId).child("location").setValue(location)
+        databaseRef.child("users").child(userId).child("location").setValue(location)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Location updated!", Toast.LENGTH_SHORT).show();

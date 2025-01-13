@@ -18,8 +18,6 @@
         android:layout_marginStart="16dp" />
 
     <!-- Profile Icon -->
-
-    <!-- RecyclerView for displaying events -->
     <ImageView
         android:id="@+id/profileIcon"
         android:layout_width="48dp"
@@ -28,13 +26,13 @@
         android:layout_marginStart="93dp"
         android:layout_marginTop="-10dp"
         android:layout_toEndOf="@id/locationText"
-        android:background="@drawable/circle_background"
         android:clickable="true"
         android:contentDescription="Profile Icon"
         android:focusable="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_profile_placeholder" />
 
+    <!-- RecyclerView for Displaying Events -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
