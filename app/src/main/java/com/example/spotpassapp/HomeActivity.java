@@ -92,8 +92,19 @@ public class HomeActivity extends AppCompatActivity {
         fetchMoreEvents();
 
         // View More Links
-        viewMoreNearby.setOnClickListener(v -> startActivity(new Intent(this, EventsNearYouActivity.class)));
-        viewMoreUpcoming.setOnClickListener(v -> startActivity(new Intent(this, UpcomingEventsActivity.class)));
+
+        // Set up "View More" for Nearby Events
+        viewMoreNearby.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EventsNearYouActivity.class);
+            intent.putExtra("user_city", locationText.getText().toString().replace("Your Location: ", "").trim());
+            startActivity(intent);
+        });
+
+        // Set up "View More" for Upcoming Events
+        viewMoreUpcoming.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UpcomingEventsActivity.class);
+            startActivity(intent);
+        });
 
         // Profile Icon
         profileIcon.setOnClickListener(v -> navigateToProfile());

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.spotpassapp.adapter.FavoritesAdapter;
 import com.example.spotpassapp.model.Event;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,33 +57,39 @@ public class FavoritesActivity extends AppCompatActivity {
         setupBottomNavigation(bottomNavigationView);
     }
 
+
     private void loadFavorites() {
-        favoritesDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                favoriteEvents.clear();
-                for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
-                    Event event = eventSnapshot.getValue(Event.class);
-                    if (event != null) {
-                        event.setId(eventSnapshot.getKey()); // Save the key for deletion
-                        favoriteEvents.add(event);
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId != null) {
+            favoritesDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    favoriteEvents.clear();
+                    for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
+                        Event event = eventSnapshot.getValue(Event.class);
+                        if (event != null) {
+                            event.setId(eventSnapshot.getKey()); // Save key for deletion
+                            favoriteEvents.add(event);
+                        }
                     }
+
+                    if (favoriteEvents.isEmpty()) {
+                        showEmptyState(true);
+                    } else {
+                        showEmptyState(false);
+                    }
+
+                    favoritesAdapter.notifyDataSetChanged();
                 }
 
-                if (favoriteEvents.isEmpty()) {
-                    showEmptyState(true);
-                } else {
-                    showEmptyState(false);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(FavoritesActivity.this, "Failed to load favorites.", Toast.LENGTH_SHORT).show();
                 }
-
-                favoritesAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(FavoritesActivity.this, "Failed to load favorites.", Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        } else {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showEmptyState(boolean isEmpty) {

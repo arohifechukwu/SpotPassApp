@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.spotpassapp.model.Event;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -67,12 +68,28 @@ public class EventDetailsActivity extends AppCompatActivity {
             timeTextView.setText(time);
             Glide.with(this).load(imageUrl).into(eventImageView);
 
+
             // Add event to favorites
             addToFavoritesButton.setOnClickListener(v -> {
-                Event event = new Event(title, description, location, date, time, price, imageUrl);
-                favoritesDatabase.push().setValue(event)
-                        .addOnCompleteListener(task -> Toast.makeText(this, "Event added to Favorites!", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(this, "Failed to add to Favorites.", Toast.LENGTH_SHORT).show());
+                String userId = FirebaseAuth.getInstance().getUid(); // Ensure user is logged in
+                if (userId != null) {
+                    DatabaseReference userFavoritesRef = FirebaseDatabase.getInstance().getReference("favorites").child(userId);
+
+                    String key = userFavoritesRef.push().getKey(); // Generate unique key
+                    if (key != null) {
+                        Event event = new Event(title, description, location, date, time, price, imageUrl);
+                        userFavoritesRef.child(key).setValue(event)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(this, "Event added to Favorites!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(this, "Failed to add to Favorites.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                } else {
+                    Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+                }
             });
 
             // Pass details to CheckoutActivity
