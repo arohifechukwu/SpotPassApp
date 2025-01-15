@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -68,12 +69,39 @@ public class ProfileActivity extends AppCompatActivity {
         initializeViews();
         loadUserProfile();
 
+        // Setup Bottom Navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        setupBottomNavigation(bottomNavigationView);
+
         // Click Listeners
         profileImage.setOnClickListener(v -> openImageSourceDialog());
         saveButton.setOnClickListener(v -> saveUserProfile());
         homeButton.setOnClickListener(v -> navigateTo(HomeActivity.class));
         exploreEventsButton.setOnClickListener(v -> navigateTo(ExploreEventsActivity.class));
         logoutButton.setOnClickListener(v -> logoutUser());
+    }
+
+    private void setupBottomNavigation(BottomNavigationView bottomNavigationView) {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile); // Highlight current tab
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_search) {
+                startActivity(new Intent(this, ExploreEventsActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_favorites) {
+                startActivity(new Intent(this, FavoritesActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                return true; // Stay on this activity
+            }
+            return false;
+        });
     }
 
     private void initializeViews() {

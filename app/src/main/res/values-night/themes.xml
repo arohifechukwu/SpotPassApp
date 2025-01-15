@@ -1,7 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SpotPassApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!-- Base application theme for Dark Mode -->
+    <style name="Theme.SpotPassApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary colors for the theme -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+    </style>
+
+    <!-- Button Styles for Dark Mode -->
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/primaryColor</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="SecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:backgroundTint">@color/secondaryColor</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Text Styles for Dark Mode -->
+    <style name="HeadlineText" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/primaryColor</item>
+        <item name="android:fontFamily">@font/poppinsbold</item>
+    </style>
+
+    <style name="BodyText" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
     </style>
 </resources>

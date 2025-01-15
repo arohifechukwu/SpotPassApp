@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,22 +24,105 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignTop="@id/locationText"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="-10dp"
-        android:layout_toEndOf="@id/locationText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
         android:contentDescription="Profile Icon"
         android:focusable="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_profile_placeholder" />
 
-    <!-- RecyclerView for Displaying Events -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <!-- "Events Near You" Section Title -->
+    <TextView
+        android:id="@+id/eventsNearYouTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Events Near You"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/textColorPrimary"
         android:layout_below="@id/locationText"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp" />
+
+    <!-- "View More" Link for Events Near You -->
+    <TextView
+        android:id="@+id/viewMoreNearby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View More"
+        android:textSize="14sp"
+        android:textColor="@color/primaryColor"
+        android:layout_alignTop="@id/eventsNearYouTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp" />
+
+    <!-- RecyclerView for "Events Near You" -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nearbyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/eventsNearYouTitle"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        tools:listitem="@layout/item_event" />
+
+    <!-- "Upcoming Events" Section Title -->
+    <TextView
+        android:id="@+id/upcomingEventsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upcoming Events"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/textColorPrimary"
+        android:layout_below="@id/nearbyRecyclerView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp" />
+
+    <!-- "View More" Link for Upcoming Events -->
+    <TextView
+        android:id="@+id/viewMoreUpcoming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View More"
+        android:textSize="14sp"
+        android:textColor="@color/primaryColor"
+        android:layout_alignTop="@id/upcomingEventsTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp" />
+
+    <!-- RecyclerView for "Upcoming Events" -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/upcomingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@id/upcomingEventsTitle"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        tools:listitem="@layout/item_event" />
+
+    <!-- "More Events" Section Title -->
+    <TextView
+        android:id="@+id/moreEventsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More Events"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/textColorPrimary"
+        android:layout_below="@id/upcomingRecyclerView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp" />
+
+    <!-- RecyclerView for "More Events" -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/moreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/moreEventsTitle"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
         tools:listitem="@layout/item_event" />
 
     <!-- Bottom Navigation -->

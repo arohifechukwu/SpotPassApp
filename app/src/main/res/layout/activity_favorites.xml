@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavoritesActivity">
+    android:background="@color/backgroundColor">
+
+    <!-- Placeholder TextView for Empty State -->
+    <TextView
+        android:id="@+id/emptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You do not have any favorites"
+        android:textSize="18sp"
+        android:textColor="@color/textColorPrimary"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
     <!-- RecyclerView for displaying favorite events -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/favoritesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"
-        android:padding="8dp"
-        tools:listitem="@layout/item_event" />
+        tools:listitem="@layout/item_favorite_event"
+        android:padding="16dp" />
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

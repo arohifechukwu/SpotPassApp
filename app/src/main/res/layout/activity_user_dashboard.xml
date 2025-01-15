@@ -1,47 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    tools:context=".UserDashboardActivity"
     android:background="@color/backgroundColor">
 
-    <LinearLayout
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/dashboardScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Dashboard"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp" />
+
+            <Button
+                android:id="@+id/viewProfileButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Profile"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/exploreEventsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Explore Events"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/viewSettingsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Settings"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/welcomeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User Dashboard"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
-
-        <Button
-            android:id="@+id/viewProfileButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Profile"
-            android:layout_marginTop="16dp" />
-
-        <Button
-            android:id="@+id/exploreEventsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Explore Events"
-            android:layout_marginTop="16dp" />
-
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_marginTop="16dp" />
-    </LinearLayout>
-</ScrollView>
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation_menu"
+        app:labelVisibilityMode="labeled" />
+</RelativeLayout>

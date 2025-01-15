@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".CheckoutActivity">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,22 +16,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Checkout"
-            android:textSize="20sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <ImageView
+            android:id="@+id/eventImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/eventDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Description"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/eventLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location:"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/eventPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price:"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/taxDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tax (Federal + Provincial):"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total:"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
-        <!-- Placeholder for displaying items to be purchased -->
-        <TextView
-            android:id="@+id/checkoutItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Items will be listed here..."
-            android:layout_marginBottom="16dp" />
-
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/payButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Proceed to Payment" />
+            android:text="Proceed to Payment"
+            android:backgroundTint="@color/primaryColor"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

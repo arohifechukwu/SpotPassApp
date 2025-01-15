@@ -24,6 +24,15 @@
         android:theme="@style/Theme.SpotPassApp"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EventsNearYouActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpcomingEventsActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrganizerDashboardActivity"
             android:exported="false" />
         <activity
