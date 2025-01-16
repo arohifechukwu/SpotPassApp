@@ -86,6 +86,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         notifyDataSetChanged();
     }
 
+
+
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         ImageView eventImage;
         TextView eventTitle;

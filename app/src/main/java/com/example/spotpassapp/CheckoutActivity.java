@@ -8,9 +8,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.stripe.android.PaymentConfiguration;
+import com.stripe.android.paymentsheet.PaymentSheet;
+import com.stripe.android.paymentsheet.PaymentSheetResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -25,42 +38,25 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final double FEDERAL_TAX = 0.05;
     private static final double PROVINCIAL_TAX_QC = 0.09975;
     private static final double PROVINCIAL_TAX_ON = 0.08;
-    private static final double PROVINCIAL_TAX_MB = 0.07; // Manitoba tax example
 
     private double eventPrice;
     private double totalPrice;
     private int quantity = 1;
 
-    private static final Map<String, String> CITY_TO_PROVINCE = new HashMap<>();
+    private PaymentSheet paymentSheet;
+    private String paymentIntentClientSecret;
 
-    static {
-        Map<String, String[]> provincesCities = new HashMap<>();
-        provincesCities.put("Alberta", new String[]{"Edmonton", "Calgary", "Red Deer", "Lethbridge", "Medicine Hat", "Grande Prairie", "Fort McMurray", "Airdrie", "St. Albert"});
-        provincesCities.put("British Columbia", new String[]{"Victoria", "Vancouver", "Surrey", "Burnaby", "Richmond", "Kelowna", "Kamloops", "Nanaimo", "Prince George", "Abbotsford"});
-        provincesCities.put("Manitoba", new String[]{"Winnipeg", "Brandon", "Steinbach", "Thompson", "Portage la Prairie", "Dauphin", "Selkirk"});
-        provincesCities.put("New Brunswick", new String[]{"Fredericton", "Moncton", "Saint John", "Bathurst", "Miramichi", "Edmundston", "Dieppe", "Campbellton"});
-        provincesCities.put("Newfoundland and Labrador", new String[]{"St. John’s", "Corner Brook", "Mount Pearl", "Gander", "Happy Valley-Goose Bay", "Labrador City"});
-        provincesCities.put("Nova Scotia", new String[]{"Halifax", "Sydney", "Dartmouth", "Truro", "New Glasgow", "Amherst", "Bridgewater"});
-        provincesCities.put("Ontario", new String[]{"Toronto", "Ottawa", "Mississauga", "Brampton", "Hamilton", "London", "Windsor", "Kitchener", "Sudbury", "Thunder Bay", "Guelph", "Kingston", "Niagara Falls"});
-        provincesCities.put("Prince Edward Island", new String[]{"Charlottetown", "Summerside", "Stratford", "Cornwall"});
-        provincesCities.put("Quebec", new String[]{"Quebec City", "Montreal", "Laval", "Gatineau", "Sherbrooke", "Trois-Rivières", "Saguenay", "Lévis", "Drummondville"});
-        provincesCities.put("Saskatchewan", new String[]{"Regina", "Saskatoon", "Prince Albert", "Moose Jaw", "Swift Current", "Yorkton", "North Battleford"});
-        provincesCities.put("Northwest Territories", new String[]{"Yellowknife", "Hay River", "Inuvik", "Fort Smith"});
-        provincesCities.put("Nunavut", new String[]{"Iqaluit", "Rankin Inlet", "Arviat", "Cambridge Bay", "Pond Inlet"});
-        provincesCities.put("Yukon", new String[]{"Whitehorse", "Dawson City", "Watson Lake", "Haines Junction"});
-
-        for (Map.Entry<String, String[]> entry : provincesCities.entrySet()) {
-            String province = entry.getKey();
-            for (String city : entry.getValue()) {
-                CITY_TO_PROVINCE.put(city.trim().toLowerCase(Locale.ROOT), province);
-            }
-        }
-    }
+    private String publishableKey = "pk_test_51QhbeV05xk3YjsYEpnnzNgiUPtz6ogl3ABraQcAh4AQSVugxWDuVlMqkc7llvoI9f8xBMEnL9o22eVx5bVQ5nxOv00LGQ1l3jQ"; // Replace with your test publishable key
+    private String secretKey = "sk_test_51QhbeV05xk3YjsYEZA2eRnKYQJATOh8TIBUyBuHvZ81ZVXSKju5d1AYgHyiXHkCFbhFtDGrtA3R9KQ3JNyYGHBCE00gbxNiDvG"; // Replace with your test secret key
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        // Initialize Stripe Payment
+        PaymentConfiguration.init(this, publishableKey);
+        paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
 
         // Initialize views
         eventImageView = findViewById(R.id.eventImageView);
@@ -76,7 +72,7 @@ public class CheckoutActivity extends AppCompatActivity {
         incrementButton = findViewById(R.id.incrementButton);
         decrementButton = findViewById(R.id.decrementButton);
 
-        // Get event details from intent
+        // Get event details
         Intent intent = getIntent();
         if (intent != null) {
             String title = intent.getStringExtra("title");
@@ -85,17 +81,15 @@ public class CheckoutActivity extends AppCompatActivity {
             eventPrice = intent.getDoubleExtra("price", 0.0);
             String imageUrl = intent.getStringExtra("imageUrl");
 
-            // Set event details
             titleTextView.setText(title);
             descriptionTextView.setText(description);
             locationTextView.setText(location);
             Glide.with(this).load(imageUrl).into(eventImageView);
 
-            // Calculate initial totals
             calculateTotals(location);
         }
 
-        // Increment and decrement quantity
+        // Quantity management
         incrementButton.setOnClickListener(v -> {
             quantity++;
             calculateTotals(locationTextView.getText().toString());
@@ -108,10 +102,9 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        // Set up payment button
-        payButton.setOnClickListener(v -> Toast.makeText(this, "Proceeding to Payment", Toast.LENGTH_SHORT).show());
+        // Payment Button Listener
+        payButton.setOnClickListener(v -> createPaymentIntent());
 
-        // Set up Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         setupBottomNavigation(bottomNavigationView);
     }
@@ -122,7 +115,6 @@ public class CheckoutActivity extends AppCompatActivity {
         double provincialTax = subtotal * getProvincialTax(city);
         totalPrice = subtotal + federalTax + provincialTax;
 
-        // Update UI
         quantityTextView.setText(String.format(Locale.getDefault(), "%d", quantity));
         priceTextView.setText(String.format(Locale.getDefault(), "$%.2f", subtotal));
         federalTaxTextView.setText(String.format(Locale.getDefault(), "Federal Tax: $%.2f", federalTax));
@@ -131,25 +123,57 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private double getProvincialTax(String city) {
-        if (city == null || city.isEmpty()) {
-            return 0.0;
+        if ("Quebec".equalsIgnoreCase(city)) {
+            return PROVINCIAL_TAX_QC;
+        } else if ("Ontario".equalsIgnoreCase(city)) {
+            return PROVINCIAL_TAX_ON;
         }
+        return 0.0;
+    }
 
-        String province = CITY_TO_PROVINCE.get(city.trim().toLowerCase(Locale.ROOT));
-        if (province == null) {
-            return 0.0; // Default to no provincial tax if city is not found
-        }
+    private void createPaymentIntent() {
+        StringRequest request = new StringRequest(Request.Method.POST, "https://api.stripe.com/v1/payment_intents",
+                response -> {
+                    try {
+                        JSONObject responseJson = new JSONObject(response);
+                        paymentIntentClientSecret = responseJson.getString("client_secret");
+                        showPaymentSheet();
+                    } catch (JSONException e) {
+                        Toast.makeText(this, "Error parsing payment intent", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> Toast.makeText(this, "Error creating payment intent", Toast.LENGTH_SHORT).show()) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + secretKey);
+                return headers;
+            }
 
-        switch (province) {
-            case "Quebec":
-                return PROVINCIAL_TAX_QC;
-            case "Ontario":
-                return PROVINCIAL_TAX_ON;
-            case "Manitoba":
-                return PROVINCIAL_TAX_MB;
-            // Add more provinces and their respective tax rates as needed
-            default:
-                return 0.0;
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("amount", String.valueOf((int) (totalPrice * 100))); // Convert dollars to cents
+                params.put("currency", "cad");
+                params.put("automatic_payment_methods[enabled]", "true");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
+
+    private void showPaymentSheet() {
+        PaymentSheet.Configuration configuration = new PaymentSheet.Configuration("SpotPass App");
+        paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration);
+    }
+
+    private void onPaymentSheetResult(PaymentSheetResult paymentSheetResult) {
+        if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
+            Toast.makeText(this, "Payment successful!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Payment failed or canceled", Toast.LENGTH_SHORT).show();
         }
     }
 

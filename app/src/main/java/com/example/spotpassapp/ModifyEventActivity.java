@@ -1,11 +1,12 @@
 package com.example.spotpassapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.example.spotpassapp.model.Event;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,15 +16,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
 public class ModifyEventActivity extends AppCompatActivity {
 
     private EditText searchEventId, eventTitle, eventDescription, eventLocation, eventDate, eventTime, eventPrice, eventImageUrl;
     private Button searchButton, updateEventButton, deleteEventButton, createEventButton;
     private DatabaseReference databaseRef;
 
-    // Variable to store the event ID of the fetched event
     private String currentEventId;
 
     @Override
@@ -31,10 +29,9 @@ public class ModifyEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_event);
 
-        // Initialize Firebase
-        databaseRef = FirebaseDatabase.getInstance().getReference("events");
+        databaseRef = FirebaseDatabase.getInstance()
+                .getReferenceFromUrl("https://spotpassapp-default-rtdb.firebaseio.com/events/events");
 
-        // Initialize Views
         searchEventId = findViewById(R.id.searchEventTitle);
         eventTitle = findViewById(R.id.eventTitle);
         eventDescription = findViewById(R.id.eventDescription);
@@ -48,11 +45,16 @@ public class ModifyEventActivity extends AppCompatActivity {
         deleteEventButton = findViewById(R.id.deleteEventButton);
         createEventButton = findViewById(R.id.createEventButton);
 
-        // Set Button Listeners
         searchButton.setOnClickListener(v -> searchEvent());
         updateEventButton.setOnClickListener(v -> updateEvent());
         deleteEventButton.setOnClickListener(v -> deleteEvent());
         createEventButton.setOnClickListener(v -> createNewEvent());
+
+        // Check for intent extras to populate fields
+        if (getIntent() != null && getIntent().hasExtra("event")) {
+            Event event = (Event) getIntent().getSerializableExtra("event");
+            populateFields(event);
+        }
     }
 
     private void createNewEvent() {
@@ -70,68 +72,30 @@ public class ModifyEventActivity extends AppCompatActivity {
             return;
         }
 
-        double price;
-        try {
-            price = Double.parseDouble(priceStr);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid price format.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        double price = Double.parseDouble(priceStr);
+        String eventId = databaseRef.push().getKey();
+        Event newEvent = new Event(eventId, title, description, location, date, time, price, imageUrl);
 
-        String eventId = databaseRef.push().getKey(); // Generate a unique ID
-        if (eventId != null) {
-            Map<String, Object> eventData = new HashMap<>();
-            eventData.put("title", title);
-            eventData.put("description", description);
-            eventData.put("location", location);
-            eventData.put("date", date);
-            eventData.put("time", time);
-            eventData.put("price", price);
-            eventData.put("imageUrl", imageUrl);
-
-            databaseRef.child(eventId).setValue(eventData).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(this, "Event created successfully!", Toast.LENGTH_SHORT).show();
-                    clearFields();
-                } else {
-                    Toast.makeText(this, "Failed to create event.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        databaseRef.child(eventId).setValue(newEvent).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Event created successfully!", Toast.LENGTH_SHORT).show();
+                clearFields();
+            } else {
+                Toast.makeText(this, "Failed to create event.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void searchEvent() {
-        String title = searchEventId.getText().toString().trim(); // Use searchEventId for title search
+        String title = searchEventId.getText().toString().trim();
         if (TextUtils.isEmpty(title)) {
             Toast.makeText(this, "Enter Event Title.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        databaseRef.orderByChild("title").equalTo(title).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
-                        currentEventId = eventSnapshot.getKey(); // Store the event ID
-                        eventTitle.setText(eventSnapshot.child("title").getValue(String.class));
-                        eventDescription.setText(eventSnapshot.child("description").getValue(String.class));
-                        eventLocation.setText(eventSnapshot.child("location").getValue(String.class));
-                        eventDate.setText(eventSnapshot.child("date").getValue(String.class));
-                        eventTime.setText(eventSnapshot.child("time").getValue(String.class));
-                        eventPrice.setText(String.valueOf(eventSnapshot.child("price").getValue(Double.class)));
-                        eventImageUrl.setText(eventSnapshot.child("imageUrl").getValue(String.class));
-                        break; // Exit loop after first match
-                    }
-                } else {
-                    Toast.makeText(ModifyEventActivity.this, "Event not found.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ModifyEventActivity.this, "Failed to fetch event.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent intent = new Intent(ModifyEventActivity.this, SearchActivity.class);
+        intent.putExtra("searchQuery", title);
+        startActivity(intent);
     }
 
     private void updateEvent() {
@@ -140,16 +104,16 @@ public class ModifyEventActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("title", eventTitle.getText().toString().trim());
-        updates.put("description", eventDescription.getText().toString().trim());
-        updates.put("location", eventLocation.getText().toString().trim());
-        updates.put("date", eventDate.getText().toString().trim());
-        updates.put("time", eventTime.getText().toString().trim());
-        updates.put("price", Double.parseDouble(eventPrice.getText().toString().trim()));
-        updates.put("imageUrl", eventImageUrl.getText().toString().trim());
+        Event updatedEvent = new Event(currentEventId,
+                eventTitle.getText().toString().trim(),
+                eventDescription.getText().toString().trim(),
+                eventLocation.getText().toString().trim(),
+                eventDate.getText().toString().trim(),
+                eventTime.getText().toString().trim(),
+                Double.parseDouble(eventPrice.getText().toString().trim()),
+                eventImageUrl.getText().toString().trim());
 
-        databaseRef.child(currentEventId).updateChildren(updates).addOnCompleteListener(task -> {
+        databaseRef.child(currentEventId).setValue(updatedEvent).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Event updated successfully!", Toast.LENGTH_SHORT).show();
             } else {
@@ -183,6 +147,17 @@ public class ModifyEventActivity extends AppCompatActivity {
         eventTime.setText("");
         eventPrice.setText("");
         eventImageUrl.setText("");
-        currentEventId = null; // Reset the current event ID
+        currentEventId = null;
+    }
+
+    private void populateFields(Event event) {
+        currentEventId = event.getKey();
+        eventTitle.setText(event.getTitle());
+        eventDescription.setText(event.getDescription());
+        eventLocation.setText(event.getLocation());
+        eventDate.setText(event.getDate());
+        eventTime.setText(event.getTime());
+        eventPrice.setText(String.valueOf(event.getPrice()));
+        eventImageUrl.setText(event.getImageUrl());
     }
 }

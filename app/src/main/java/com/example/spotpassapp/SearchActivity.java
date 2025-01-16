@@ -1,8 +1,7 @@
 package com.example.spotpassapp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
-    private List<Event> eventsList;
+
     private RecyclerView recyclerView;
     private EventAdapter eventAdapter;
-    private SearchView searchView;
+    private List<Event> eventList;
     private DatabaseReference databaseRef;
 
     @Override
@@ -32,58 +31,38 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Initialize Firebase reference
-        databaseRef = FirebaseDatabase.getInstance().getReference("events");
-
-        // Initialize views
-        searchView = findViewById(R.id.searchView);
+        // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        eventList = new ArrayList<>();
 
-        // Initialize event list and adapter
-        eventsList = new ArrayList<>();
-        eventAdapter = new EventAdapter(this, eventsList);
-        recyclerView.setAdapter(eventAdapter);
+        // Reference to the events database
+        databaseRef = FirebaseDatabase.getInstance()
+                .getReferenceFromUrl("https://spotpassapp-default-rtdb.firebaseio.com/events/events");
 
-        // Fetch events from the database
-        fetchEventsFromDatabase();
-
-        // Set up search filter logic
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                eventAdapter.filter(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                eventAdapter.filter(newText);
-                return true;
-            }
-        });
+        // Load all events
+        fetchAllEvents();
     }
 
-    /**
-     * Fetch events from Firebase Realtime Database.
-     */
-    private void fetchEventsFromDatabase() {
+    private void fetchAllEvents() {
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                eventsList.clear(); // Clear the list to avoid duplication
+                eventList.clear();
                 for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
                     Event event = eventSnapshot.getValue(Event.class);
                     if (event != null) {
-                        eventsList.add(event);
+                        event.setKey(eventSnapshot.getKey());
+                        eventList.add(event);
                     }
                 }
-                eventAdapter.notifyDataSetChanged(); // Update the adapter with new data
+                eventAdapter = new EventAdapter(SearchActivity.this, eventList);
+                recyclerView.setAdapter(eventAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SearchActivity.this, "Failed to fetch events.", Toast.LENGTH_SHORT).show();
+                // Handle database error
             }
         });
     }

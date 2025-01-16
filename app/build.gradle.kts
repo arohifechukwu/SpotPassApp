@@ -44,7 +44,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-appcheck")
-    implementation ("com.stripe:stripe-android:20.22.0")
+    implementation ("com.stripe:stripe-android:20.33.0")
     implementation ("com.android.volley:volley:1.2.1")
     implementation ("com.google.firebase:firebase-firestore:24.9.0")
     implementation(libs.firebase.storage)

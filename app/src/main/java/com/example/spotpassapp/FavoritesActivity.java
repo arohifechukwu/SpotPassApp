@@ -68,7 +68,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     for (DataSnapshot eventSnapshot : snapshot.getChildren()) {
                         Event event = eventSnapshot.getValue(Event.class);
                         if (event != null) {
-                            event.setId(eventSnapshot.getKey()); // Save key for deletion
+                            event.setKey(eventSnapshot.getKey()); // Save key for deletion
                             favoriteEvents.add(event);
                         }
                     }

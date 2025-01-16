@@ -60,7 +60,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         holder.deleteButton.setOnClickListener(v -> {
             String userId = FirebaseAuth.getInstance().getUid();
             if (userId != null) {
-                favoritesDatabase.child(userId).child(event.getId()).removeValue().addOnCompleteListener(task -> {
+                favoritesDatabase.child(userId).child(event.getKey()).removeValue().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Event removed from favorites.", Toast.LENGTH_SHORT).show();
                     } else {
